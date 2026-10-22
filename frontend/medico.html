@@ -1,207 +1,437 @@
-  <!DOCTYPE html>
-  <html>
-  <head>
-    <link rel="stylesheet" href="/css/style.css">
-    <style>
-      .btn-tv{
-        background: #28a745;
-        color: white;
-        border:none ;
-        padding: 8px 14px;
-        border-radius:5px ;
-        cursor: pointer;
-        font-size: 14px;
-        margin-top:8px ;
-      }
-      .btn-tv:hover{background: #1e7e34;}
-      .btn-abrir-abrir{
-        background: #17a2b8;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 5px;
-        font-size:14px;
-        cursor: pointer;
-      }
-      .btn-abrir:hover{background: #117a8b;}
-      .consutorio-input{
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 16px;
-        background: #f0f4ff;
-        padding: 10px 14px;
-        border-radius: 6px;
-        border: 1px solid #d0d8f0;
-      }
-      .consutorio-input label{font-weight: bold;}
-      .consutorio-input input{
-        width: 60px;
-        text-align: center;
-        font-size: 18px;
-        font-weight: bold;
-        padding: 4px 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-    </style>
-  </head>
+<head>
 
-  <body>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <div class="container">
-    <!--cabecalho com botao tv-->
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom:20px;">
+<title>Painel Médico</title>
 
-    <h2 style="margin: 0;">🏥Triagem Hospitalar</h2>
-    <button class="btn-abrir-tv" onclick="window.open('tv.html','_blank')">📺 Abrir Tela da TV</button>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  </div>
-  <!--Campo criado para informar o consutorio e chamar o paciente na TV-->
-    <div class="consutorio-input">
-      <label>Meu consutorio</label>
-      <input type="text" id="consutorio-num" value="01">
-      <span style="color: #666; font-size: 13px;">Este numero 
-        sera exibido na TV ao chamar o paciente
-      </span>
-    </div>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <h2 >🩺 Painel Médico</h2>
+<style>
 
-    <div id="triagens"></div>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-    <hr>
+body{
 
-    <h3>Consulta</h3>
+    font-family:'Cinzel',serif;
 
-    <input id="paciente" placeholder="Paciente" readonly>
+    background:
+    linear-gradient(rgba(15,8,0,.82),rgba(15,8,0,.82)),
+    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80");
 
-    <input id="diagnostico" placeholder="Diagnóstico">
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
 
-    <select id="medicacao">
-      <option value="">Selecione a medicação</option>
-    </select>
+    color:#f4deb0;
 
-    <textarea id="obs" placeholder="Observações"></textarea>
+    padding:40px;
 
-    <button onclick="salvar()">Salvar</button>
+}
 
-  </div>
+.container{
 
-  <script>
+    max-width:1000px;
 
-  let triagensCarregadas = [];
+    margin:auto;
 
-  function carregar() {
-    fetch("/triagens")
-      .then(r => r.json())
-      .then(data => {
-        triagensCarregadas = data;
+    background:rgba(35,18,8,.92);
 
-        const div = document.getElementById("triagens");
-        div.innerHTML = "";
+    border:3px solid #8b5a2b;
 
-        data.forEach((t, index) => {
-          div.innerHTML += `
-            <div class="card">
-              <h3>${t.nome}</h3>
+    border-radius:10px;
 
-              <p><b>Sintoma:</b> ${t.sintoma || "Não informado"}</p>
+    padding:35px;
 
-              <p><b>Temperatura:</b> ${t.temperatura || "Não informada"}°C</p>
+    box-shadow:
+    0 0 40px rgba(0,0,0,.8),
+    inset 0 0 15px rgba(255,190,60,.08);
 
-              <p>
-                <span class="${t.risco}">
-                  ${t.risco}
-                </span>
-              </p>
+}
 
-              <p><b>Alergia:</b> ${t.alergia || "Nenhuma"}</p>
+h2,h3{
 
-              <p><b>Observação:</b> ${t.observacao || "Nenhuma"}</p>
+    text-align:center;
 
-              <button onclick="selecionar(${index})">
-                Atender
-              </button>
-            </div>
-          `;
-        });
-      });
-  }
+    margin-bottom:25px;
 
-  function selecionar(index) {
-    const t = triagensCarregadas[index];
+    color:#f6d28d;
 
-    document.getElementById("paciente").value = t.nome;
-    document.getElementById("obs").value = t.observacao || "";
+    text-shadow:2px 2px 5px black;
 
-    if (t.alergia && t.alergia !== "Nenhuma") {
-      alert("⚠️ Paciente possui alergia: " + t.alergia);
-    }
-  }
+}
 
-  function carregarMedicacoes() {
-    fetch("/lista-medicacoes")
-      .then(r => r.json())
-      .then(data => {
-        const select = document.getElementById("medicacao");
+#triagens{
 
-        select.innerHTML = `
-          <option value="">Selecione a medicação</option>
-        `;
+    display:grid;
 
-        data.forEach(med => {
-          const option = document.createElement("option");
-          option.value = med;
-          option.textContent = med;
-          select.appendChild(option);
-        });
-      });
-  }
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 
-  function salvar() {
-    const paciente = document.getElementById("paciente").value;
-    const diagnostico = document.getElementById("diagnostico").value;
-    const medicacao = document.getElementById("medicacao").value;
-    const obs = document.getElementById("obs").value;
+    gap:20px;
 
-    if (!paciente) {
-      alert("Selecione um paciente clicando em Atender.");
-      return;
-    }
+    margin-bottom:35px;
 
-    if (!medicacao) {
-      alert("Selecione uma medicação.");
-      return;
-    }
+}
 
-    fetch("/consulta", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        paciente,
-        diagnostico,
-        medicacao,
-        obs
-      })
-    })
-    .then(r => r.json())
-    .then(() => {
-      alert("Consulta salva");
+.card{
 
-      document.getElementById("diagnostico").value = "";
-      document.getElementById("medicacao").value = "";
-      document.getElementById("obs").value = "";
-    });
-  }
+    background:#3a2415;
 
-  carregar();
-  carregarMedicacoes();
+    border-left:8px solid #b8860b;
 
-  </script>
+    border-radius:8px;
 
-  </body>
-  </html>
+    padding:20px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.5);
+
+    transition:.3s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 8px 18px rgba(255,190,60,.25);
+
+}
+
+.card h3{
+
+    text-align:left;
+
+    margin-bottom:15px;
+
+    color:#ffd27a;
+
+}
+
+.card p{
+
+    margin:10px 0;
+
+    line-height:1.5;
+
+}
+
+input,
+select,
+textarea{
+
+    width:100%;
+
+    margin-bottom:18px;
+
+    padding:14px;
+
+    background:#3b2415;
+
+    color:#f4deb0;
+
+    border:2px solid #8b5a2b;
+
+    border-radius:6px;
+
+    outline:none;
+
+    font-family:inherit;
+
+}
+
+input::placeholder,
+textarea::placeholder{
+
+    color:#d7b882;
+
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    border-color:#d4af37;
+
+    box-shadow:0 0 10px rgba(212,175,55,.5);
+
+}
+
+textarea{
+
+    resize:vertical;
+
+    min-height:120px;
+
+}
+
+button{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    background:linear-gradient(#cfa24c,#8b5a2b);
+
+    color:#2b1708;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    letter-spacing:2px;
+
+    font-family:inherit;
+
+    transition:.3s;
+
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+
+    background:linear-gradient(#deb562,#a06a31);
+
+    box-shadow:0 0 18px rgba(255,190,60,.4);
+
+}
+
+.verde{
+
+    color:#4caf50;
+    font-weight:bold;
+
+}
+
+.amarelo{
+
+    color:#ffd54f;
+    font-weight:bold;
+
+}
+
+.vermelho{
+
+    color:#ff4b4b;
+    font-weight:bold;
+
+}
+
+hr{
+
+    border:1px solid #8b5a2b;
+
+    margin:35px 0;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🩺 Painel Médico</h2>
+
+<div id="triagens"></div>
+
+<hr>
+
+<h3>Consulta Médica</h3>
+
+<input id="paciente" placeholder="Paciente" readonly>
+
+<input id="diagnostico" placeholder="Diagnóstico">
+
+<select id="medicacao">
+<option value="">Selecione a medicação</option>
+</select>
+
+<textarea id="obs" placeholder="Observações"></textarea>
+
+<button onclick="salvar()">
+Salvar Consulta
+</button>
+
+</div>
+
+<script>
+
+let triagensCarregadas=[];
+
+function carregar(){
+
+fetch("/triagens")
+
+.then(r=>r.json())
+
+.then(data=>{
+
+triagensCarregadas=data;
+
+const div=document.getElementById("triagens");
+
+div.innerHTML="";
+
+data.forEach((t,index)=>{
+
+div.innerHTML+=`
+
+<div class="card">
+
+<h3>👤 ${t.nome}</h3>
+
+<p><b>🤒 Sintoma:</b> ${t.sintoma || "Não informado"}</p>
+
+<p><b>🌡 Temperatura:</b> ${t.temperatura || "--"}°C</p>
+
+<p><b>⚠️ Risco:</b>
+<span class="${t.risco}">
+${t.risco}
+</span>
+</p>
+
+<p><b>💉 Alergia:</b> ${t.alergia || "Nenhuma"}</p>
+
+<p><b>📝 Observação:</b> ${t.observacao || "Nenhuma"}</p>
+
+<button onclick="selecionar(${index})">
+Atender
+</button>
+
+</div>
+
+`;
+
+});
+
+});
+
+}
+
+function selecionar(index){
+
+const t=triagensCarregadas[index];
+
+paciente.value=t.nome;
+
+obs.value=t.observacao || "";
+
+if(t.alergia && t.alergia!="Nenhuma"){
+
+alert("⚠️ Paciente possui alergia: "+t.alergia);
+
+}
+
+}
+
+function carregarMedicacoes(){
+
+fetch("/lista-medicacoes")
+
+.then(r=>r.json())
+
+.then(data=>{
+
+const select=document.getElementById("medicacao");
+
+select.innerHTML='<option value="">Selecione a medicação</option>';
+
+data.forEach(m=>{
+
+const op=document.createElement("option");
+
+op.value=m;
+
+op.textContent=m;
+
+select.appendChild(op);
+
+});
+
+});
+
+}
+
+function salvar(){
+
+const paciente=document.getElementById("paciente").value;
+const diagnostico=document.getElementById("diagnostico").value;
+const medicacao=document.getElementById("medicacao").value;
+const obs=document.getElementById("obs").value;
+
+if(!paciente){
+
+alert("Selecione um paciente.");
+
+return;
+
+}
+
+if(!medicacao){
+
+alert("Selecione uma medicação.");
+
+return;
+
+}
+
+fetch("/consulta",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+paciente,
+diagnostico,
+medicacao,
+obs
+
+})
+
+})
+
+.then(r=>r.json())
+
+.then(()=>{
+
+alert("Consulta salva com sucesso!");
+
+diagnostico.value="";
+medicacao.value="";
+obs.value="";
+
+});
+
+}
+
+carregar();
+
+carregarMedicacoes();
+
+</script>
+
+</body>
+</html>

@@ -14,32 +14,6 @@
       "usuario": "atendimento",
       "senha": "123",
       "tipo": "atendimento"
-    },
-    {
-      "usuario": "admin",
-      "senha": "123",
-      "tipo": "admin"
-    },
-    {
-      "id": 1792674841374,
-      "nome": "posdpa",
-      "usuario": "posdpa",
-      "senha": "dasds",
-      "tipo": "atendimento"
-    },
-    {
-      "id": 1792675672912,
-      "nome": "paulao",
-      "usuario": "paulao",
-      "senha": "12312312",
-      "tipo": "atendimento"
-    },
-    {
-      "id": 1792677115544,
-      "nome": "arthur",
-      "usuario": "arthur",
-      "senha": "21312312",
-      "tipo": "medico"
     }
   ],
   "pacientes": [
@@ -48,7 +22,7 @@
       "nome": "",
       "cpf": "",
       "tipo": "Particular",
-      "status": "aguardando_medico",
+      "status": "triagem",
       "createdAt": "2026-04-22T11:35:28.699Z"
     },
     {
@@ -116,12 +90,28 @@
       "createdAt": "2026-05-15T11:16:21.579Z"
     },
     {
-      "id": 1786717914523,
-      "nome": "arthur",
-      "cpf": "123123123123123",
+      "id": 1786022087206,
+      "nome": "arhur",
+      "cpf": "133213123123",
       "tipo": "Particular",
-      "status": "aguardando_medico",
-      "createdAt": "2026-08-14T14:31:54.523Z"
+      "status": "triagem",
+      "createdAt": "2026-08-06T13:14:47.206Z"
+    },
+    {
+      "id": 1786028405333,
+      "nome": "yuri guslavo",
+      "cpf": "6767676767.42",
+      "tipo": "Convênio",
+      "status": "triagem",
+      "createdAt": "2026-08-06T15:00:05.333Z"
+    },
+    {
+      "id": 1786028980284,
+      "nome": "ubiratan",
+      "cpf": "42424242424",
+      "tipo": "Particular",
+      "status": "triagem",
+      "createdAt": "2026-08-06T15:09:40.284Z"
     }
   ],
   "triagens": [
@@ -281,94 +271,70 @@
       "createdAt": "2026-06-02T13:06:29.261Z"
     },
     {
-      "id": 1786630280403,
+      "id": 1786022113990,
       "nome": "arthur",
       "sintoma": "dor_leve",
-      "temperatura": 33,
-      "alergia": "dipirona",
-      "observacao": "",
-      "risco": "verde",
-      "status": "aguardando_medico",
-      "createdAt": "2026-08-13T14:11:20.403Z"
-    },
-    {
-      "id": 1786630313170,
-      "nome": "arthur",
-      "sintoma": "dor_leve",
-      "temperatura": 33,
-      "alergia": "dipirona",
-      "observacao": "",
-      "risco": "verde",
-      "status": "aguardando_medico",
-      "createdAt": "2026-08-13T14:11:53.170Z"
-    },
-    {
-      "id": 1786630326241,
-      "nome": "arthur",
-      "sintoma": "vomito",
-      "temperatura": 33,
-      "alergia": "dipirona",
-      "observacao": "",
-      "risco": "amarelo",
-      "status": "aguardando_medico",
-      "createdAt": "2026-08-13T14:12:06.241Z"
-    },
-    {
-      "id": 1786630977308,
-      "nome": "arthur",
-      "sintoma": "",
-      "temperatura": 22,
-      "alergia": "cu",
-      "observacao": "",
-      "risco": "verde",
-      "status": "aguardando_medico",
-      "createdAt": "2026-08-13T14:22:57.308Z"
-    },
-    {
-      "id": 1786717946611,
-      "nome": "arthur",
-      "sintoma": "",
-      "temperatura": 34,
-      "alergia": "dipirona",
-      "observacao": "",
-      "risco": "verde",
-      "status": "aguardando_medico",
-      "createdAt": "2026-08-14T14:32:26.611Z"
-    },
-    {
-      "id": 1787234708191,
-      "nome": "qdasda",
-      "sintoma": "resfriado",
       "temperatura": 12,
       "alergia": "",
       "observacao": "",
       "risco": "verde",
       "status": "aguardando_medico",
-      "createdAt": "2026-08-20T14:05:08.191Z"
+      "createdAt": "2026-08-06T13:15:13.990Z"
     },
     {
-      "id": 1792674348439,
-      "pacienteId": "1776857728699",
+      "id": 1786023111722,
       "nome": "arthur",
-      "cpf": "21312312321",
-      "temperatura": "33",
-      "pressao": "123",
-      "sintomas": "",
-      "prioridade": "Baixa",
+      "sintoma": "dor_leve",
+      "temperatura": 32,
+      "alergia": "",
+      "observacao": "",
+      "risco": "verde",
       "status": "aguardando_medico",
-      "criadoEm": "2026-10-22T13:05:48.439Z"
+      "createdAt": "2026-08-06T13:31:51.722Z"
     },
     {
-      "id": 1792674680103,
-      "pacienteId": "1786717914523",
+      "id": 1786023118513,
       "nome": "arthur",
-      "cpf": "123123123123123",
-      "temperatura": "",
-      "pressao": "",
-      "sintomas": "",
-      "prioridade": "Normal",
+      "sintoma": "coriza",
+      "temperatura": 32,
+      "alergia": "",
+      "observacao": "",
+      "risco": "verde",
       "status": "aguardando_medico",
-      "criadoEm": "2026-10-22T13:11:20.103Z"
+      "createdAt": "2026-08-06T13:31:58.513Z"
+    },
+    {
+      "id": 1786028641685,
+      "nome": "marcus piqueno",
+      "sintoma": "diarreia",
+      "temperatura": 67,
+      "alergia": "MULHER, DESODORANTE, CRUSH, PAO E CREMOGEMA",
+      "observacao": "Paciente apresenta riscos de hemorroidas e problemas com mulheres",
+      "risco": "vermelho",
+      "status": "aguardando_medico",
+      "createdAt": "2026-08-06T15:04:01.685Z"
+    },
+    {
+      "id": 1786028881790,
+      "nome": "marcus piqueno",
+      "sintoma": "diarreia",
+      "temperatura": 67,
+      "alergia": "MULHER, a leite de mulheres CRUSH, PAO E CREMOGEMA",
+      "observacao": "Paciente apresenta riscos de hemorroidas e problemas com mulheres",
+      "risco": "vermelho",
+      "status": "aguardando_medico",
+      "createdAt": "2026-08-06T15:08:01.790Z"
+    },
+    {
+      "id": 1786029014781,
+      "nome": "ubiratan",
+      "sintoma": "diarreia",
+      "temperatura": 35,
+      "alergia": "mulheres",
+      "observacao": "esta passando mal a dias",
+      "risco": "amarelo",
+      "status": "aguardando_medico",
+      "createdAt": "2026-08-06T15:10:14.781Z"
     }
   ],
   "consultas": [
@@ -508,31 +474,5 @@
       "obs": "rththr",
       "createdAt": "2026-06-09T14:43:30.683Z"
     }
-  ],
-  "medicacoes": [],
-  "tv": {
-    "chamada": {
-      "id": 1792677083310,
-      "paciente": "enzo",
-      "localTipo": "CONSULTÓRIO",
-      "localNumero": "02",
-      "data": "2026-10-22T13:51:23.310Z"
-    },
-    "historico": [
-      {
-        "id": 1792677083310,
-        "paciente": "enzo",
-        "localTipo": "CONSULTÓRIO",
-        "localNumero": "02",
-        "data": "2026-10-22T13:51:23.310Z"
-      },
-      {
-        "id": 1792677015544,
-        "paciente": "jesus",
-        "localTipo": "CONSULTÓRIO",
-        "localNumero": "01",
-        "data": "2026-10-22T13:50:15.544Z"
-      }
-    ]
-  }
+  ]
 }

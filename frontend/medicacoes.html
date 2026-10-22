@@ -1,59 +1,202 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
+
 <head>
-  <link rel="stylesheet" href="/css/style.css">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Medicações Prescritas</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:'Cinzel',serif;
+
+    background:
+    linear-gradient(rgba(18,10,0,.80),rgba(18,10,0,.80)),
+    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80");
+
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+
+    color:#f5deb3;
+
+    padding:40px;
+
+}
+
+.container{
+
+    max-width:900px;
+
+    margin:auto;
+
+    background:rgba(35,18,8,.92);
+
+    border:3px solid #8b5a2b;
+
+    border-radius:10px;
+
+    padding:35px;
+
+    box-shadow:
+    0 0 40px rgba(0,0,0,.7),
+    inset 0 0 15px rgba(255,180,60,.08);
+
+}
+
+h2{
+
+    text-align:center;
+
+    font-size:34px;
+
+    margin-bottom:30px;
+
+    letter-spacing:2px;
+
+    color:#f5d28d;
+
+    text-shadow:2px 2px 5px #000;
+
+}
+
+.card{
+
+    background:#3a2415;
+
+    border-left:8px solid #b8860b;
+
+    border-radius:8px;
+
+    padding:20px;
+
+    margin-bottom:20px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.45);
+
+    transition:.3s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 8px 20px rgba(255,180,60,.2);
+
+}
+
+.card h3{
+
+    color:#ffd27a;
+
+    margin-bottom:15px;
+
+    font-size:24px;
+
+}
+
+.card p{
+
+    margin:10px 0;
+
+    line-height:1.6;
+
+    color:#f0d9a8;
+
+}
+
+b{
+
+    color:#ffcf6d;
+
+}
+
+.sem{
+
+    text-align:center;
+
+    color:#d7b882;
+
+    font-size:18px;
+
+    padding:30px;
+
+}
+
+</style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-  <h2>💊 Medicações Prescritas</h2>
+<h2>💊 Medicações Prescritas</h2>
 
-  <!-- IMPLEMENTADO: local onde a lista de medicações será exibida -->
-  <div id="listaMedicacoes"></div>
+<div id="listaMedicacoes"></div>
 
 </div>
 
 <script>
 
-// IMPLEMENTADO: busca as consultas salvas e mostra as medicações
-function carregarMedicacoesPrescritas() {
-  fetch("/medicacoes")
-    .then(r => r.json())
-    .then(data => {
-      const div = document.getElementById("listaMedicacoes");
+function carregarMedicacoesPrescritas(){
 
-      div.innerHTML = "";
+fetch("/medicacoes")
 
-      if (data.length === 0) {
-        div.innerHTML = "<p>Nenhuma medicação prescrita.</p>";
-        return;
-      }
+.then(r=>r.json())
 
-      data.forEach(c => {
-        div.innerHTML += `
-          <div class="card">
-            <h3>${c.paciente}</h3>
+.then(data=>{
 
-            <p>
-              <b>Medicação:</b>
-              ${c.medicacao}
-            </p>
+const div=document.getElementById("listaMedicacoes");
 
-            <p>
-              <b>Diagnóstico:</b>
-              ${c.diagnostico}
-            </p>
+div.innerHTML="";
 
-            <p>
-              <b>Observações:</b>
-              ${c.obs || "Nenhuma"}
-            </p>
-          </div>
-        `;
-      });
-    });
+if(data.length===0){
+
+div.innerHTML='<div class="sem">Nenhuma medicação prescrita.</div>';
+
+return;
+
+}
+
+data.forEach(c=>{
+
+div.innerHTML+=`
+
+<div class="card">
+
+<h3>👤 ${c.paciente}</h3>
+
+<p><b>💊 Medicação:</b> ${c.medicacao}</p>
+
+<p><b>🩺 Diagnóstico:</b> ${c.diagnostico}</p>
+
+<p><b>📝 Observações:</b> ${c.obs || "Nenhuma observação."}</p>
+
+</div>
+
+`;
+
+});
+
+});
+
 }
 
 carregarMedicacoesPrescritas();

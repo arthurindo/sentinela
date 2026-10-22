@@ -1,36 +1,201 @@
 <!DOCTYPE html>
-<html>
-<head><link rel="stylesheet" href="/css/style.css"></head>
-<body>
-<div class="container">
-<h2>Atendimento</h2>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<input id="nome" placeholder="Nome">
+<title>Atendimento</title>
+
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-family:'Cinzel',serif;
+
+    background:
+    linear-gradient(rgba(20,10,0,.75),rgba(20,10,0,.75)),
+    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80");
+
+    background-size:cover;
+    background-position:center;
+
+    color:#f4d28c;
+}
+
+.container{
+
+    width:420px;
+
+    background:rgba(35,18,8,.88);
+
+    border:3px solid #8b5a2b;
+
+    border-radius:8px;
+
+    padding:35px;
+
+    box-shadow:
+    0 0 40px rgba(0,0,0,.7),
+    inset 0 0 20px rgba(255,180,80,.08);
+
+}
+
+h2{
+
+    text-align:center;
+    font-size:34px;
+    margin-bottom:25px;
+    letter-spacing:3px;
+    color:#f6d28d;
+    text-shadow:2px 2px 5px #000;
+
+}
+
+input,
+select{
+
+    width:100%;
+    padding:14px;
+    margin-bottom:18px;
+
+    background:#3c2616;
+
+    color:#f8e3b5;
+
+    border:2px solid #8b5a2b;
+
+    outline:none;
+
+    font-size:15px;
+
+    border-radius:5px;
+
+    font-family:inherit;
+
+}
+
+input::placeholder{
+    color:#d8bb87;
+}
+
+input:focus,
+select:focus{
+
+    border-color:#d4af37;
+
+    box-shadow:0 0 10px rgba(212,175,55,.5);
+
+}
+
+input[type=file]{
+
+    padding:10px;
+    background:#2a1a10;
+
+}
+
+button{
+
+    width:100%;
+
+    padding:15px;
+
+    font-size:17px;
+
+    font-family:inherit;
+
+    letter-spacing:2px;
+
+    border:none;
+
+    cursor:pointer;
+
+    border-radius:6px;
+
+    background:linear-gradient(#c79a42,#8b5a2b);
+
+    color:#2b1607;
+
+    font-weight:bold;
+
+    transition:.3s;
+
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+
+    background:linear-gradient(#d8b15a,#a06a31);
+
+    box-shadow:0 0 15px rgba(255,180,60,.5);
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>ATENDIMENTO</h2>
+
+<input id="nome" placeholder="Nome do Paciente">
+
 <input id="cpf" placeholder="CPF">
 
 <select id="tipo">
-  <option>Convenio</option>
-  <option>Particular</option>
+    <option>Convênio</option>
+    <option>Particular</option>
 </select>
 
 <input type="file" id="foto">
 
-<button onclick="cadastrar()">Cadastrar</button>
+<button onclick="cadastrar()">
+Cadastrar
+</button>
+
 </div>
 
 <script>
+
 function cadastrar(){
+
  fetch("http://localhost:3000/atendimento",{
+
   method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body: JSON.stringify({
-    nome: nome.value,
-    cpf: cpf.value,
-    tipo: tipo.value
+
+  headers:{
+    "Content-Type":"application/json"
+  },
+
+  body:JSON.stringify({
+
+    nome:nome.value,
+    cpf:cpf.value,
+    tipo:tipo.value
+
   })
+
  });
+
  alert("Paciente enviado para triagem");
+
 }
+
 </script>
+
 </body>
 </html>
