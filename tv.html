@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Chamadas - Hospital</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  color: #f8fafc;
+  background: #08111f;
+}
+
+header {
+  padding: 25px;
+  text-align: center;
+  background: #0f1d33;
+  border-bottom: 2px solid #1e3a5f;
+}
+
+header h1 {
+  margin: 0;
+  font-size: clamp(25px, 4vw, 40px);
+}
+
+header p {
+  color: #a9bad0;
+}
+
+main {
+  width: 94%;
+  max-width: 1400px;
+  margin: 30px auto;
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 25px;
+}
+
+.panel {
+  padding: 25px;
+  border: 1px solid #263a56;
+  border-radius: 20px;
+  background: #101d30;
+  min-width: 0;
+}
+
+.panel h2 {
+  color: #cbd5e1;
+}
+
+.current {
+  min-height: 400px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 2px solid #1e7492;
+  border-radius: 18px;
+  background: #0b2639;
+}
+
+.label {
+  color: #67e8f9;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+
+#patient-name {
+  font-size: clamp(30px, 5vw, 62px);
+  overflow-wrap: anywhere;
+}
+
+#local-name {
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: bold;
+  color: #fde68a;
+}
+
+#call-time {
+  margin-top: 20px;
+  color: #a9bad0;
+}
+
+#history-list {
+  list-style: none;
+  padding: 0;
+}
+
+#history-list li {
+  margin-bottom: 12px;
+  padding: 15px;
+  border-radius: 12px;
+  background: #172940;
+  border: 1px solid #2a405d;
+  overflow-wrap: anywhere;
+}
+
+.history-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.history-local {
+  margin-top: 7px;
+  color: #fde68a;
+}
+
+.history-time {
+  margin-top: 7px;
+  color: #a9bad0;
+  font-size: 13px;
+}
+
+#connection {
+  margin-top: 20px;
+  text-align: center;
+  color: #94a3b8;
+}
+
+.dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: #fbbf24;
+}
+
+.dot.online {
+  background: #4ade80;
+}
+
+@media (max-width: 800px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  .current {
+    min-height: 300px;
+  }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>🏥 Painel de Chamadas</h1>
+  <p>Acompanhe sua chamada para atendimento</p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>Chamada atual</h2>
+
+    <div class="current" aria-live="polite">
+      <div class="label">PACIENTE CHAMADO</div>
+      <h2 id="patient-name">Aguardando chamada...</h2>
+      <div id="local-name">Local: --</div>
+      <div id="call-time">Nenhuma chamada registrada</div>
+    </div>
+
+    <div id="connection">
+      <span class="dot"></span>
+      Conectando ao servidor...
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Últimas chamadas</h2>
+    <ul id="history-list">
+      <li>Nenhuma chamada registrada.</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+const patientName = document.getElementById("patient-name");
+const localName = document.getElementById("local-name");
+const callTime = document.getElementById("call-time");
+const historyList = document.getElementById("history-list");
+const connection = document.getElementById("connection");
+
+let ultimaChamadaId = null;
+
+function formatarData(data) {
+  if (!data) return "";
+
+  const dataObj = new Date(data);
+
+  if (Number.isNaN(dataObj.getTime())) return "";
+
+  return dataObj.toLocaleString("pt-BR", {
+    dateStyle: "short",
+    timeStyle: "short"
+  });
+}
+
+function anunciarChamada(chamada) {
+  if (!("speechSynthesis" in window)) return;
+
+  window.speechSynthesis.cancel();
+
+  const texto =
+    `Atenção. ${chamada.paciente}. Dirija-se ao ` +
+    `${chamada.localTipo || "local de atendimento"} ` +
+    `${chamada.localNumero || ""}.`;
+
+  const fala = new SpeechSynthesisUtterance(texto);
+  fala.lang = "pt-BR";
+  fala.rate = 0.9;
+
+  window.speechSynthesis.speak(fala);
+}
+
+function mostrarChamada(chamada) {
+  if (!chamada) {
+    patientName.textContent = "Aguardando chamada...";
+    localName.textContent = "Local: --";
+    callTime.textContent = "Nenhuma chamada registrada";
+    ultimaChamadaId = null;
+    return;
+  }
+
+  patientName.textContent = chamada.paciente || "Paciente";
+  localName.textContent =
+    `${chamada.localTipo || "LOCAL"} ${chamada.localNumero || ""}`.trim();
+
+  callTime.textContent = "Chamado em: " + formatarData(chamada.data);
+
+  if (ultimaChamadaId !== chamada.id) {
+    ultimaChamadaId = chamada.id;
+    anunciarChamada(chamada);
+  }
+}
+
+function mostrarHistorico(historico) {
+  historyList.replaceChildren();
+
+  if (!Array.isArray(historico) || historico.length === 0) {
+    const li = document.createElement("li");
+    li.textContent = "Nenhuma chamada registrada.";
+    historyList.appendChild(li);
+    return;
+  }
+
+  historico.forEach(chamada => {
+    const li = document.createElement("li");
+
+    const nome = document.createElement("div");
+    nome.className = "history-name";
+    nome.textContent = chamada.paciente || "Paciente";
+
+    const local = document.createElement("div");
+    local.className = "history-local";
+    local.textContent =
+      `${chamada.localTipo || "LOCAL"} ${chamada.localNumero || ""}`.trim();
+
+    const data = document.createElement("div");
+    data.className = "history-time";
+    data.textContent = formatarData(chamada.data);
+
+    li.append(nome, local, data);
+    historyList.appendChild(li);
+  });
+}
+
+async function carregarChamada() {
+  try {
+    const resposta = await fetch("/tv/chamada", {
+      cache: "no-store"
+    });
+
+    if (!resposta.ok) {
+      throw new Error("Erro ao consultar o servidor.");
+    }
+
+    const dados = await resposta.json();
+
+    mostrarChamada(dados.chamada);
+    mostrarHistorico(dados.historico);
+
+    connection.innerHTML =
+      '<span class="dot online"></span> Conectado ao servidor';
+  } catch (erro) {
+    console.error(erro);
+    connection.innerHTML =
+      '<span class="dot"></span> Sem conexão. Tentando novamente...';
+  }
+}
+
+carregarChamada();
+setInterval(carregarChamada, 2000);
+</script>
+</body>
+</html>
